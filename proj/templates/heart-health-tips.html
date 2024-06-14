@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Heart Disease Prediction Result</title>
+        
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- AOS Animation Library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+        <!-- FontAwesome for Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+        <style>
+            body {
+            font-family: 'Poppins', sans-serif;
+            
+            background-color: #220202;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 V0 L5 10 V0 L10 10' fill='%3340404'/%3E%3C/svg%3E");
+
+            background-size: 200% 200%;
+            animation: GradientShift 10s infinite;
+        }
+        @keyframes GradientShift {
+    0% { background-position: 100% 0%; }
+    50% { background-position: 0% 100%; }
+    100% { background-position: 100% 0%; }
+}
+            
+            @keyframes bgPulse {
+                0% {
+                    background: linear-gradient(120deg, #d9afd9 0%, #97d9e1 100%);
+                }
+                50% {
+                    background: linear-gradient(120deg, #d6a0d6 0%, #91d6de 100%);
+                }
+                100% {
+                    background: linear-gradient(120deg, #d9afd9 0%, #97d9e1 100%);
+                }
+            }
+            
+            @keyframes heartbeat {
+                0% {
+                    transform: scale(0.85);
+                    color: #f00;
+                    box-shadow: 0 0 5px #f00;
+                }
+                5% {
+                    transform: scale(1);
+                    color: #ff3333;
+                    box-shadow: 0 0 15px #ff3333;
+                }
+                15% {
+                    transform: scale(0.85);
+                    color: #f00;
+                    box-shadow: 0 0 5px #f00;
+                }
+                25% {
+                    transform: scale(1);
+                    color: #ff3333;
+                    box-shadow: 0 0 15px #ff3333;
+                }
+                50% {
+                    transform: scale(0.85);
+                    color: #f00;
+                    box-shadow: 0 0 5px #f00;
+                }
+                100% {
+                    transform: scale(0.85);
+                    color: #f00;
+                    box-shadow: 0 0 5px #f00;
+                }
+            }
+            
+            .title-icon-heartbeat {
+                animation: heartbeat 1s infinite;
+            }
+            
+            .card {
+                border: none;
+                box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.2);
+            }
+            
+            .btn-primary {
+                background-color: #84fab0;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            
+            .fact-container {
+                padding: 20px;
+                background-color: #f3f4f6;
+                border-radius: 10px;
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .fact-icon {
+                font-size: 50px;
+                color: #84fab0;
+                margin-bottom: 20px;
+            }
+            
+            .stats-container {
+                padding: 40px 20px;
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .stats-item {
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .stats-number {
+                font-size: 2rem;
+                font-weight: bold;
+                color: #84fab0;
+            }
+            
+            .stats-description {
+                font-size: 1rem;
+                margin-top: 5px;
+            }
+            nav.navbar {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .main-wrapper {
+        display: flex;
+        flex-direction: column; /* Stack children vertically */
+        height: 100%;
+    }
+    
+    .content-wrapper {
+        flex: 1; /* Take available space */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    nav.navbar {
+        position: relative;
+        width: 100%;
+    }
+    h1, h2, h3, h4, h5, p, li, a {
+    color: 2px 2px 2px rgba(20, 1, 1, 0.852);
+}
+
+.container, .list-group-item {
+    background-color: rgb(219, 212, 212);
+    padding: 20px;
+    border-radius: 10px;
+}
+                </style>
+    </head>
+    
+<body>
+
+<!-- Navigation -->
+<div class="main-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <a class="navbar-brand" href="{{ url_for('welcome') }}"><i class="fas fa-heartbeat"></i> HeartDiseasePredictor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {{ 'active' if active_page == 'welcome' else '' }}">
+                    <a class="nav-link" href="{{ url_for('welcome') }}">Home</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'prediction_guide' else '' }}">
+                    <a class="nav-link" href="{{ url_for('prediction_guide') }}">Prediction Guide</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'heart_health_tips' else '' }}">
+                    <a class="nav-link" href="{{ url_for('heart_health_tips') }}">Heart Health Tips</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'resources' else '' }}">
+                    <a class="nav-link" href="{{ url_for('resources') }}">Resources</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'contact_us' else '' }}">
+                    <a class="nav-link" href="{{ url_for('contact_us') }}">Contact Us</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+    
+         <!-- Heart Health Tips Content -->
+    <div class="container mt-5">
+        <h1>Heart Health Tips</h1>
+        <p>Maintaining good heart health is crucial for a long and healthy life. Here are some tips to help you ensure your heart stays in the best condition:</p>
+        
+        <div class="list-group">
+            <div class="list-group-item">
+                <h4>Stay Active</h4>
+                <p>Regular exercise helps improve heart health. Aim for at least 30 minutes of moderate exercise most days of the week.</p>
+            </div>
+
+            <div class="list-group-item">
+                <h4>Eat a Balanced Diet</h4>
+                <p>Include plenty of fruits, vegetables, and whole grains in your diet. Limit saturated fats, sugars, and salt.</p>
+            </div>
+
+            <div class="list-group-item">
+                <h4>Regular Check-ups</h4>
+                <p>Regular health check-ups can help detect risk factors in their early stages.</p>
+            </div>
+
+            <div class="list-group-item">
+                <h4>Avoid Smoking</h4>
+                <p>Smoking is a major risk factor for cardiovascular diseases. Quitting can reduce the risk significantly.</p>
+            </div>
+
+            <div class="list-group-item">
+                <h4>Moderate Alcohol Use</h4>
+                <p>Excessive drinking can lead to high blood pressure. It's important to drink in moderation.</p>
+            </div>
+
+            <div class="list-group-item">
+                <h4>Manage Stress</h4>
+                <p>Chronic stress may contribute to heart disease. Find healthy ways to manage stress like meditation, deep breathing, and exercise.</p>
+            </div>
+        </div>
+    </div>
+
+<!-- Your script tags and footer content -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome for Icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+<!-- AOS Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+<!-- Initialize AOS Library -->
+<script>
+    AOS.init();
+
+    particlesJS.load('particles-js', 'path_to_particles.json', function() {
+        console.log('Particles loaded.');
+    });
+
+    var options = {
+        strings: ["Heart Disease Prediction", "Improve Your Heart Health", "Stay Informed. Stay Healthy."],
+        typeSpeed: 50,
+        backSpeed: 30,
+        backDelay: 1000,
+        loop: true
+    };
+
+    var typed = new Typed("#typed-output", options);
+
+</script>
+<footer class="text-center py-4 mt-5 bg-light">
+    <p>© 2023 HeartDiseasePredictor | Designed with ❤ by TEAM-04</p>
+</footer>
+
+</body>
+</html>

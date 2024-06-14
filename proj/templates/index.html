@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Custom styling */
+        html,
+        body {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #220202;
+            background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 V0 L5 10 V0 L10 10' fill='%3340404'/%3E%3C/svg%3E");
+            background-size: 200% 200%;
+            animation: GradientShift 10s infinite;
+        }
+
+        @keyframes GradientShift {
+            0% {
+                background-position: 100% 0%;
+            }
+
+            50% {
+                background-position: 0% 100%;
+            }
+
+            100% {
+                background-position: 100% 0%;
+            }
+        }
+
+        /* Adjusted form container */
+        .form-container {
+            padding: 30px;
+            width: 500px; /* Increased width */
+            margin: auto; /* Center the form horizontally */
+            background-color: #fff; /* White background */
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 50px; /* Add some space from the top */
+        }
+
+        /* Custom button */
+        .btn-primary {
+            background-color: #6d0918;
+            border-color: #3c0404;
+            color: #ffffff;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #790923;
+            transform: scale(1.05);
+            box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Adjust label and form control colors */
+        label,
+        .form-check-label {
+            color: #000; /* Change text color to black */
+        }
+
+        /* Adjusting form input visibility */
+        .form-control {
+            background-color: #e9eaeb; /* Lighter background color */
+            color: #100f0f; /* Text color */
+            border: 1px solid #312b2b; /* Lighter border color */
+        }
+
+        /* Adjust radio buttons and labels */
+        .form-check-input:checked+.form-check-label,
+        .form-check-input:not(:checked)+.form-check-label {
+            color: #000; /* Change text color to black */
+        }
+
+        /* Center the text within form-check-label */
+        .form-check-label {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Custom form heading */
+        .form-heading {
+            text-align: center;
+            color: #333; /* Heading text color */
+            background-color: #f4f4f4; /* Background color */
+            padding: 20px; /* Padding around the heading */
+            border-radius: 10px; /* Rounded corners */
+            font-size: 28px; /* Font size */
+            font-family: 'Poppins', sans-serif; /* Font family */
+            text-transform: uppercase; /* Uppercase text */
+            letter-spacing: 1px; /* Letter spacing */
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+            margin-bottom: 30px; /* Bottom margin */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <a class="navbar-brand" href="{{ url_for('welcome') }}"><i class="fas fa-heartbeat"></i> HeartDiseasePredictor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {{ 'active' if active_page == 'welcome' else '' }}">
+                    <a class="nav-link" href="{{ url_for('welcome') }}">Home</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'prediction_guide' else '' }}">
+                    <a class="nav-link" href="{{ url_for('prediction_guide') }}">Prediction Guide</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'heart_health_tips' else '' }}">
+                    <a class="nav-link" href="{{ url_for('heart_health_tips') }}">Heart Health Tips</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'resources' else '' }}">
+                    <a class="nav-link" href="{{ url_for('resources') }}">Resources</a>
+                </li>
+                <li class="nav-item {{ 'active' if active_page == 'contact_us' else '' }}">
+                    <a class="nav-link" href="{{ url_for('contact_us') }}">Contact Us</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5 form-container">
+        <form action="/predict" method="post">
+            <!-- Form heading -->
+            <h2 class="form-heading">Heart Disease Prediction Form</h2>
+
+            <!-- Age -->
+            <div class="form-group">
+                <label for="age">How old are you?</label>
+                <input type="number" class="form-control" name="age" id="age" min="0" required>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <label>Your gender:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="0" checked>
+                    <label class="form-check-label" for="female">Female</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="1">
+                    <label class="form-check-label" for="male">Male</label>
+                </div>
+            </div>
+
+            <!-- Chest Pain (cp) -->
+            <div class="form-group">
+                <label for="cp">Type of chest pain you experience:</label>
+                <select class="form-control" name="cp" id="cp">
+                    <option value="0">0 - Type 1</option>
+                    <option value="1">1 - Type 2</option>
+                    <option value="2">2 - Type 3</option>
+                    <option value="3">3 - Type 4</option>
+                </select>
+            </div>
+
+            <!-- Resting Blood Pressure (trestbps) -->
+            <div class="form-group">
+                <label for="trestbps">Your resting blood pressure:</label>
+                <input type="number" class="form-control" name="trestbps" id="trestbps" required>
+            </div>
+
+            <!-- Cholesterol (chol) -->
+            <div class="form-group">
+                <label for="chol">Your cholesterol level:</label>
+                <input type="number" class="form-control" name="chol" id="chol" required>
+            </div>
+
+            <!-- Fasting Blood Sugar (fbs) -->
+            <div class="form-group">
+                <label>Is your fasting sugar above 120 mg/dl?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fbs" id="fbs-yes" value="1">
+                    <label class="form-check-label" for="fbs-yes">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fbs" id="fbs-no" value="0" checked>
+                    <label class="form-check-label" for="fbs-no">No</label>
+                </div>
+            </div>
+
+            <!-- Resting ECG Measurement (restecg) -->
+            <div class="form-group">
+                <label for="restecg">Your ECG measurement when resting:</label>
+                <select class="form-control" name="restecg" id="restecg">
+                    <option value="0">0 - Type 1</option>
+                    <option value="1">1 - Type 2</option>
+                    <option value="2">2 - Type 3</option>
+                </select>
+            </div>
+
+            <!-- Maximum heart rate achieved (thalach) -->
+            <div class="form-group">
+                <label for="thalach">Your maximum heart rate during exercise:</label>
+                <input type="number" class="form-control" name="thalach" id="thalach" required>
+            </div>
+
+            <!-- Exercise-Induced Angina (exang) -->
+            <div class="form-group">
+                <label>Do you get chest pain when you exercise?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exang" id="exang-yes" value="1">
+                    <label class="form-check-label" for="exang-yes">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exang" id="exang-no" value="0" checked>
+                    <label class="form-check-label" for="exang-no">No</label>
+                </div>
+            </div>
+
+            <!-- ST depression induced by exercise relative to rest (oldpeak) -->
+            <div class="form-group">
+                <label for="oldpeak">Difference in your ECG when resting and exercising:</label>
+                <input type="number" step="0.1" class="form-control" name="oldpeak" id="oldpeak" required>
+            </div>
+
+            <!-- Slope of the peak exercise ST segment (slope) -->
+            <div class="form-group">
+                <label for="slope">Change in your heart activity during exercise:</label>
+                <select class="form-control" name="slope" id="slope">
+                    <option value="0">0 - Type 1</option>
+                    <option value="1">1 - Type 2</option>
+                    <option value="2">2 - Type 3</option>
+                </select>
+            </div>
+
+            <!-- Number of major vessels (ca) -->
+            <div class="form-group">
+                <label for="ca">How many of your main vessels are colored in a test?</label>
+                <select class="form-control" name="ca" id="ca">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <!-- Related to thalassemia (thal) -->
+            <div class="form-group">
+                <label for="thal">A test related to blood disorder thalassemia:</label>
+                <select class="form-control" name="thal" id="thal">
+                    <option value="0">0 - Type 1</option>
+                    <option value="1">1 - Type 2</option>
+                    <option value="2">2 - Type 3</option>
+                    <option value="3">3 - Type 4</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+    </div>
+
+    <!-- Font Awesome Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</body>
+
+</html>

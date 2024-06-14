@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction Result</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            
+            background-color: #220202;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 V0 L5 10 V0 L10 10' fill='%3340404'/%3E%3C/svg%3E");
+
+            background-size: 200% 200%;
+            animation: GradientShift 10s infinite;
+        }
+        @keyframes GradientShift {
+    0% { background-position: 100% 0%; }
+    50% { background-position: 0% 100%; }
+    100% { background-position: 100% 0%; }
+}
+        
+        @keyframes bgPulse {
+            0% {
+                background: linear-gradient(120deg, #d9afd9 0%, #97d9e1 100%);
+            }
+            50% {
+                background: linear-gradient(120deg, #d6a0d6 0%, #91d6de 100%);
+            }
+            100% {
+                background: linear-gradient(120deg, #d9afd9 0%, #97d9e1 100%);
+            }
+        }
+        
+        @keyframes heartbeat {
+            0% {
+                transform: scale(0.85);
+                color: #f00;
+                box-shadow: 0 0 5px #f00;
+            }
+            5% {
+                transform: scale(1);
+                color: #ff3333;
+                box-shadow: 0 0 15px #ff3333;
+            }
+            15% {
+                transform: scale(0.85);
+                color: #f00;
+                box-shadow: 0 0 5px #f00;
+            }
+            25% {
+                transform: scale(1);
+                color: #ff3333;
+                box-shadow: 0 0 15px #ff3333;
+            }
+            50% {
+                transform: scale(0.85);
+                color: #f00;
+                box-shadow: 0 0 5px #f00;
+            }
+            100% {
+                transform: scale(0.85);
+                color: #f00;
+                box-shadow: 0 0 5px #f00;
+            }
+        }
+        
+        .title-icon-heartbeat {
+            animation: heartbeat 1s infinite;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary {
+            background-color: #84fab0;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .fact-container {
+            padding: 20px;
+            background-color: #f3f4f6;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fact-icon {
+            font-size: 50px;
+            color: #84fab0;
+            margin-bottom: 20px;
+        }
+        
+        .stats-container {
+            padding: 40px 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #84fab0;
+        }
+        
+        .stats-description {
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        nav.navbar {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.main-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    height: 100%;
+}
+
+.content-wrapper {
+    flex: 1; /* Take available space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav.navbar {
+    position: relative;
+    width: 100%;
+}
+h2{
+    color: #0ee1f9;
+}
+h4{
+    color: #0ee1f9;
+}
+p{
+    color: #dbe1e1;
+}
+h3{
+    color: #220202;
+}
+            </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <a class="navbar-brand" href="{{ url_for('welcome') }}"><i class="fas fa-heartbeat"></i> HeartDiseasePredictor</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item {{ 'active' if active_page == 'welcome' else '' }}">
+                        <a class="nav-link" href="{{ url_for('welcome') }}">Home</a>
+                    </li>
+                    <li class="nav-item {{ 'active' if active_page == 'prediction_guide' else '' }}">
+                        <a class="nav-link" href="{{ url_for('prediction_guide') }}">Prediction Guide</a>
+                    </li>
+                    <li class="nav-item {{ 'active' if active_page == 'heart_health_tips' else '' }}">
+                        <a class="nav-link" href="{{ url_for('heart_health_tips') }}">Heart Health Tips</a>
+                    </li>
+                    <li class="nav-item {{ 'active' if active_page == 'resources' else '' }}">
+                        <a class="nav-link" href="{{ url_for('resources') }}">Resources</a>
+                    </li>
+                    <li class="nav-item {{ 'active' if active_page == 'contact_us' else '' }}">
+                        <a class="nav-link" href="{{ url_for('contact_us') }}">Contact Us</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </nav>
+<!-- Main Container -->
+<div class="parallax-section" style="background-image: url('path_to_your_image.jpg');">
+    <!-- Your Content Here -->
+</div>
+<div class="typing-title">
+    <span id="typed-output"></span>
+</div>
+
+<div class="main-wrapper">
+    <!-- ... (Navbar remains unchanged) ... -->
+
+    <div class="container mt-5 pt-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <!-- Card Header: Prediction Result Title -->
+                    <div class="card-header text-center">
+                        <!-- Adding class for heartbeat animation -->
+                        <h3><i class="fas fa-heartbeat title-icon-heartbeat" data-toggle="tooltip" title="Heartbeat represents the analysis based on heart health data."></i> Prediction Result</h3>
+                    </div>
+
+                    <!-- Card Body: Result based on Prediction -->
+                    <div class="card-body text-center">
+                        <h3>{{ message }}</h3>
+                    </div>
+
+                    <!-- Card Footer: Go Back Button -->
+                    <div class="card-footer text-center">
+                        <a href="{{ url_for('predict') }}" class="btn btn-primary">Go Back</a>
+                    </div>
+
+                </div> <!-- Close Card -->
+            </div> <!-- Close col-md-6 -->
+        </div> <!-- Close row -->
+        <!-- <div class="card-body text-center">
+            <h3>{{ message }}</h3>
+            <hr>
+            <h4>Model's Performance</h4>
+            <p><strong>Accuracy on Test Data:</strong> {{ accuracy }}%</p>
+           
+        </div> -->
+<!-- ... rest of your HTML ... -->
+<p align="center">
+    <a href="{{ url_for('download_pdf') }}" class="btn btn-outline-info">
+        Download your prediction as PDF
+    </a>
+</p>
+
+
+<div class="mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+    <h2 class="text-center">Did You Know?</h2>
+    <div class="row stats-container">
+        <div class="col-md-4 stats-item">
+            <div class="stats-number">78%</div>
+            <div class="stats-description">Of heart diseases can be prevented with early detection.</div>
+        </div>
+        <div class="col-md-4 stats-item">
+            <div class="stats-number">{{ total_predictions }}</div>
+            <div class="stats-description"> </div>
+        </div>
+        <div class="col-md-4 stats-item">
+            <div class="stats-number">30 mins</div>
+            <div class="stats-description">Of daily exercise can boost heart health.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Informational Section -->
+<div class="mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
+    <h2 class="text-center">Understanding Heart Health</h2>
+    <p>
+        Heart health is crucial for overall well-being. Factors such as diet, exercise, stress, and genetics play a role in heart disease. Regular check-ups and being informed can reduce risks.
+    </p>
+
+    <h4>Diet and Heart Health</h4>
+    <p>Eating a balanced diet rich in fruits, vegetables, and whole grains can significantly benefit heart health. Limiting saturated fats, sugars, and sodium is also vital.</p>
+
+    <h4>Importance of Exercise</h4>
+    <p>Physical activity helps maintain a healthy weight, reduces the risk of several diseases including heart diseases, and can improve mental well-being.</p>
+
+    <a href="https://www.healthline.com/nutrition/27-health-and-nutrition-tips#avoid-up-fs" class="btn btn-outline-primary">Learn More</a>
+</div>
+
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Font Awesome for Icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+<!-- AOS Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+<!-- Initialize AOS Library -->
+<script>
+    AOS.init();
+
+    particlesJS.load('particles-js', 'path_to_particles.json', function() {
+        console.log('Particles loaded.');
+    });
+
+    var options = {
+        strings: ["Heart Disease Prediction", "Improve Your Heart Health", "Stay Informed. Stay Healthy."],
+        typeSpeed: 50,
+        backSpeed: 30,
+        backDelay: 1000,
+        loop: true
+    };
+
+    var typed = new Typed("#typed-output", options);
+
+</script>
+
+</body>
+</html>
+
